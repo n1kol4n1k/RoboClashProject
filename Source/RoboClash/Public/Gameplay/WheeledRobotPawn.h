@@ -49,6 +49,9 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void UpdateHealthUI(float CurrHealth, float CurrHealthPercentage);
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void TriggerWeaponFX(FVector HitLocation);
+
 	virtual void NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) override;
 	virtual void BeginPlay() override;
 };

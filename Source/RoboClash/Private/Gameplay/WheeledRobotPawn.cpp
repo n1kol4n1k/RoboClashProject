@@ -27,10 +27,11 @@ void AWheeledRobotPawn::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UP
 		return;
 	}
 
-	if (const AWheeledRobotPawn* OtherRobot = Cast<AWheeledRobotPawn>(Other))
+	if (AWheeledRobotPawn* OtherRobot = Cast<AWheeledRobotPawn>(Other))
 	{
 		mCurrentHealth -= OtherRobot->GetWeaponHitDamage();
 		UpdateHealthUI(mCurrentHealth, mCurrentHealth / mStartingHealth);
+		OtherRobot->TriggerWeaponFX(HitLocation);
 	}
 }
 
