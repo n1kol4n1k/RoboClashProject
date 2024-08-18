@@ -28,7 +28,7 @@ protected:
 	UPROPERTY(EditAnywhere)
 	float mStartingHealth;
 	
-	UPROPERTY(EditAnywhere) //move to transient after implementing ui
+	UPROPERTY(Transient)
 	float mCurrentHealth;
 
 	UPROPERTY(EditAnywhere)
@@ -38,6 +38,8 @@ protected:
 
 public:
 	float GetWeaponHitDamage() const { return mWeaponHitDamage; }
+	RobotWeaponState GetWeaponState() const { return mWeaponState; }
+	const FName& GetWeaponBoneName() const { return mWeaponBoneName; }
 
 	UFUNCTION(BlueprintCallable)
 	virtual float CalculateCurrentWeaponAngle(float DeltaTime);
