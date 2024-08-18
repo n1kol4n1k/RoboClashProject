@@ -34,6 +34,8 @@ protected:
 	UPROPERTY(EditAnywhere)
 	float mWeaponHitDamage;
 
+	void UpdateHealthUI() { UpdateHealthUI(mCurrentHealth, mCurrentHealth / mStartingHealth); }
+
 public:
 	float GetWeaponHitDamage() const { return mWeaponHitDamage; }
 

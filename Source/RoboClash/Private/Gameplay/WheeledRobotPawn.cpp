@@ -30,7 +30,7 @@ void AWheeledRobotPawn::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UP
 	if (AWheeledRobotPawn* OtherRobot = Cast<AWheeledRobotPawn>(Other))
 	{
 		mCurrentHealth -= OtherRobot->GetWeaponHitDamage();
-		UpdateHealthUI(mCurrentHealth, mCurrentHealth / mStartingHealth);
+		UpdateHealthUI();
 		OtherRobot->TriggerWeaponFX(HitLocation);
 	}
 }
@@ -40,5 +40,5 @@ void AWheeledRobotPawn::BeginPlay()
 	Super::BeginPlay();
 
 	mCurrentHealth = mStartingHealth;
-	UpdateHealthUI(mCurrentHealth, mCurrentHealth/mStartingHealth);
+	UpdateHealthUI();
 }
