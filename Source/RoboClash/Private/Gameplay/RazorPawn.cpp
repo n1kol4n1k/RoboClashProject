@@ -11,3 +11,5 @@ float ARazorPawn::CalculateCurrentWeaponAngle(float DeltaTime)
 		return mCurrentWeaponAngle = FMath::Wrap(mCurrentWeaponAngle - DeltaTime * mSawRotationSpeed, 0.f, 360.f);
 	}
 }
+
+

@@ -22,10 +22,26 @@ float AReaperPawn::CalculateCurrentWeaponAngle(float DeltaTime)
 			mCurrentWeaponAngle = mCurrentWeaponAngle + DeltaTime * mHookSwingSpeed;
 			if (mCurrentWeaponAngle >= 0) //reset state after animation is complete
 			{
-				//mWeaponState = RobotWeaponState::Inactive;
-				IsForward = true;
+				mWeaponState = RobotWeaponState::Inactive;
+				//IsForward = true;
 			}
 		}
 		return mCurrentWeaponAngle;
 	}
+}
+
+void AReaperPawn::HandleToggleWeaponInput()
+{
+	mWeaponState = RobotWeaponState::Active;
+}
+
+bool AReaperPawn::CheckHitAvailable()
+{
+	const float CurrentTime = GetWorld()->GetTimeSeconds();
+	const bool rtn = CurrentTime - mLastHitTime > mHitCooldown;
+	if (rtn)
+	{
+		mLastHitTime = CurrentTime;
+	}
+	return rtn;
 }

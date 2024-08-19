@@ -19,7 +19,7 @@ class ROBOCLASH_API AWheeledRobotPawn : public AWheeledVehiclePawn
 	GENERATED_BODY()
 
 protected:
-	RobotWeaponState mWeaponState = RobotWeaponState::Active;
+	RobotWeaponState mWeaponState = RobotWeaponState::Inactive;
 	float mCurrentWeaponAngle = 0.f;
 
 	UPROPERTY(EditAnywhere)
@@ -49,6 +49,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void HandleEndWeaponInput();
+
+	UFUNCTION(BlueprintCallable)
+	virtual void HandleToggleWeaponInput();
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void UpdateHealthUI(float CurrHealth, float CurrHealthPercentage);
