@@ -23,7 +23,7 @@ float AReaperPawn::CalculateCurrentWeaponAngle(float DeltaTime)
 			if (mCurrentWeaponAngle >= 0) //reset state after animation is complete
 			{
 				mWeaponState = RobotWeaponState::Inactive;
-				//IsForward = true;
+				IsForward = true;
 			}
 		}
 		return mCurrentWeaponAngle;
