@@ -18,8 +18,13 @@ class ROBOCLASH_API AWheeledRobotPawn : public AWheeledVehiclePawn
 {
 	GENERATED_BODY()
 
+public:
+	AWheeledRobotPawn(const FObjectInitializer& ObjectInitializer);
+
 protected:
+	UPROPERTY(Transient, Replicated)
 	RobotWeaponState mWeaponState = RobotWeaponState::Inactive;
+
 	float mCurrentWeaponAngle = 0.f;
 
 	UPROPERTY(EditAnywhere)
@@ -28,7 +33,7 @@ protected:
 	UPROPERTY(EditAnywhere)
 	float mStartingHealth;
 	
-	UPROPERTY(Transient)
+	UPROPERTY(Transient, ReplicatedUsing=OnRep_CurrentHealth)
 	float mCurrentHealth;
 
 	UPROPERTY(EditAnywhere)
@@ -61,4 +66,10 @@ public:
 
 	virtual void NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) override;
 	virtual void BeginPlay() override;
+
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+private:
+	UFUNCTION()
+	void OnRep_CurrentHealth();
 };

@@ -28,8 +28,15 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AWheeledRobotPawn> TurtleBP;
 
-
+	TArray<class APlayerStart*> AvailableSpawnPoints;
 
 protected:
+	virtual void StartPlay() override;
 	virtual void OnPostLogin(AController* NewPlayer) override;
+
+public:
+	void SpawnRobotForPlayer(FName& robotName, class ARobotController* player);
+
+private:
+	class AActor* FindOptimalSpawnPoint(APlayerController* forPlayer) const;
 };
