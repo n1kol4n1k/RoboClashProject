@@ -72,4 +72,8 @@ public:
 private:
 	UFUNCTION()
 	void OnRep_CurrentHealth();
+
+	UFUNCTION(Server, Reliable)
+	void ServerHandleWeaponStateChanged(RobotWeaponState state);
+	void ServerHandleWeaponStateChanged_Implementation(RobotWeaponState state);
 };
