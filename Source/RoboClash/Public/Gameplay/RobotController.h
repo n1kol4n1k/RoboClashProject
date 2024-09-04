@@ -40,5 +40,5 @@ public:
 	virtual void BeginPlay() override;
 
 private:
-
+	virtual void OnRep_PlayerState() override;
 };

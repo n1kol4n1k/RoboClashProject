@@ -67,3 +67,12 @@ void ARobotController::BeginPlay()
 		}
 	}
 }
+
+void ARobotController::OnRep_PlayerState()
+{
+	ABattleRobotState* RobotState = GetPlayerState<ABattleRobotState>();
+	if (RobotState)
+	{
+		RobotState->SetName(data.ChosenRobotName);
+	}
+}
