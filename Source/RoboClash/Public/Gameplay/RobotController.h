@@ -26,4 +26,19 @@ public:
 	UFUNCTION(Server, Reliable)
 	void SendClientData(FInitRobotData initData);
 	void SendClientData_Implementation(FInitRobotData initData);
+
+protected:
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UBattleOverlay> HudWidget;
+
+	UPROPERTY(Transient)
+	UBattleOverlay* HudInstance;
+
+	FInitRobotData data;
+
+public:
+	virtual void BeginPlay() override;
+
+private:
+
 };

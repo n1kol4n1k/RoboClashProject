@@ -10,9 +10,18 @@ class ROBOCLASH_API ABattleRobotState : public APlayerState
 	GENERATED_BODY()
 
 protected:
-	UPROPERTY(Transient, BlueprintReadWrite)
-	FName mRobotName;
+	UPROPERTY(Transient, BlueprintReadWrite, Replicated)
+	FName mName;
+
+	UPROPERTY(Transient, BlueprintReadWrite, Replicated)
+	int32 mScore = 0;
 
 public:
-	const FName& GetRobotName() const { return mRobotName; }
+	void SetName(const FName& name) { mName = name; }
+	void AddScore(uint32 scoreToAdd) { mScore += scoreToAdd; }
+
+	FName GetName() const { return mName; }
+	int32 GetScore() const { return mScore; }
+
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 };

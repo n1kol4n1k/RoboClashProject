@@ -1,6 +1,7 @@
 #include "Gameplay/WheeledRobotPawn.h"
 #include "Gameplay/ReaperPawn.h"
 #include "Net/UnrealNetwork.h"
+#include "Gameplay/BattleRobotState.h"
 
 AWheeledRobotPawn::AWheeledRobotPawn(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -73,7 +74,7 @@ void AWheeledRobotPawn::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UP
 	if (HasAuthority())
 	{
 		mCurrentHealth -= AttackerRobot->GetWeaponHitDamage();
-
+		Cast<ABattleRobotState>(AttackerRobot->GetPlayerState())->AddScore(AttackerRobot->GetWeaponHitDamage());
 		OnRep_CurrentHealth();
 	}
 
