@@ -74,8 +74,10 @@ void AWheeledRobotPawn::NotifyHit(UPrimitiveComponent* MyComp, AActor* Other, UP
 	if (HasAuthority())
 	{
 		mCurrentHealth -= AttackerRobot->GetWeaponHitDamage();
-		Cast<ABattleRobotState>(AttackerRobot->GetPlayerState())->AddScore(AttackerRobot->GetWeaponHitDamage());
 		OnRep_CurrentHealth();
+
+		ABattleRobotState* AttackerRobotState = Cast<ABattleRobotState>(AttackerRobot->GetPlayerState());
+		AttackerRobotState->AddScore(AttackerRobot->GetWeaponHitDamage());
 	}
 
 	AttackerRobot->TriggerWeaponFX(HitLocation);
@@ -93,7 +95,6 @@ void AWheeledRobotPawn::BeginPlay()
 	}
 
 	UpdateHealthUI();
-
 }
 
 void AWheeledRobotPawn::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const

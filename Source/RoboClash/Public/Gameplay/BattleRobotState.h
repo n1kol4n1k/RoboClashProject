@@ -13,15 +13,19 @@ protected:
 	UPROPERTY(Transient, BlueprintReadWrite, Replicated)
 	FName mName;
 
-	UPROPERTY(Transient, BlueprintReadWrite, Replicated)
+	UPROPERTY(Transient, BlueprintReadWrite, ReplicatedUsing=OnRep_ScoreChanged)
 	int32 mScore = 0;
 
 public:
 	void SetName(const FName& name) { mName = name; }
-	void AddScore(uint32 scoreToAdd) { mScore += scoreToAdd; }
+	void AddScore(uint32 scoreToAdd) { mScore += scoreToAdd; OnRep_ScoreChanged(); }
 
-	FName GetName() const { return mName; }
-	int32 GetScore() const { return mScore; }
+	FName GetRobotName() const { return mName; }
+	int32 GetRobotScore() const { return mScore; }
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+protected:
+	UFUNCTION()
+	void OnRep_ScoreChanged();
 };

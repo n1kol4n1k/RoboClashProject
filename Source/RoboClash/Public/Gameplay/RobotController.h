@@ -34,11 +34,11 @@ protected:
 	UPROPERTY(Transient)
 	UBattleOverlay* HudInstance;
 
-	FInitRobotData data;
-
 public:
 	virtual void BeginPlay() override;
+	void RefreshScoreboard();
 
 private:
 	virtual void OnRep_PlayerState() override;
+	
 };

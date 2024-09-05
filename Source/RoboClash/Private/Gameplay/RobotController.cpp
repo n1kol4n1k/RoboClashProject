@@ -6,7 +6,7 @@
 #include "UI/BattleOverlay.h"
 #include "GameFramework/GameStateBase.h"
 #include "UI/LeaderboardEntry.h"
-
+#include "Kismet/GameplayStatics.h"
 
 void ARobotController::RequestClientData_Implementation()
 {
@@ -15,12 +15,6 @@ void ARobotController::RequestClientData_Implementation()
 	FInitRobotData initData;
 	initData.ChosenRobotName = Cast<URoboClashGameInstance>(GetGameInstance())->ChosenRobotName;
 	SendClientData(initData);
-
-	ABattleRobotState* RobotState = GetPlayerState<ABattleRobotState>();
-	if (RobotState)
-	{
-		RobotState->SetName(initData.ChosenRobotName);
-	}
 }
 
 void ARobotController::SendClientData_Implementation(FInitRobotData initData)
@@ -29,18 +23,15 @@ void ARobotController::SendClientData_Implementation(FInitRobotData initData)
 
 	ABattleGameMode* GameMode = Cast<ABattleGameMode>(GetWorld()->GetAuthGameMode());
 	GameMode->SpawnRobotForPlayer(initData.ChosenRobotName, this);
-	data = initData;
+
+	ABattleRobotState* RobotState = GetPlayerState<ABattleRobotState>();
+	RobotState->SetName(initData.ChosenRobotName);
+	OnRep_PlayerState();
 }
 
 void ARobotController::BeginPlay()
 {
 	Super::BeginPlay();
-
-	ABattleRobotState* RobotState = GetPlayerState<ABattleRobotState>();
-	if (RobotState)
-	{
-		RobotState->SetName(data.ChosenRobotName);
-	}
 
 	if (IsLocalController())
 	{
@@ -48,16 +39,31 @@ void ARobotController::BeginPlay()
 		if (HudInstance)
 		{
 			HudInstance->AddToViewport();
+			RefreshScoreboard();
 		}
+	}
+}
 
+void ARobotController::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
+	ARobotController* LocalController = Cast<ARobotController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	LocalController->RefreshScoreboard();
+}
+
+void ARobotController::RefreshScoreboard()
+{
+	if (IsLocalController() && IsValid(HudInstance))
+	{
+		ABattleRobotState* RobotState = GetPlayerState<ABattleRobotState>();
 		AGameStateBase* GameStateBase = GetWorld()->GetGameState();
 		for (int32 i = 1; i <= GameStateBase->PlayerArray.Num(); i++)
 		{
-			APlayerState* CurrentPlayerState = GameStateBase->PlayerArray[i - 1];
+			ABattleRobotState* CurrentPlayerState = Cast<ABattleRobotState>(GameStateBase->PlayerArray[i - 1]);
 			ULeaderboardEntry* entry = HudInstance->GetEntry(i);
 
-			entry->AddName(data.ChosenRobotName);
-			entry->AddScore(CurrentPlayerState->GetScore());
+			entry->AddName(CurrentPlayerState->GetRobotName());
+			entry->AddScore(CurrentPlayerState->GetRobotScore());
 			if (CurrentPlayerState == RobotState)
 			{
 				entry->Highlight();
@@ -65,14 +71,5 @@ void ARobotController::BeginPlay()
 
 			entry->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 		}
-	}
-}
-
-void ARobotController::OnRep_PlayerState()
-{
-	ABattleRobotState* RobotState = GetPlayerState<ABattleRobotState>();
-	if (RobotState)
-	{
-		RobotState->SetName(data.ChosenRobotName);
 	}
 }
